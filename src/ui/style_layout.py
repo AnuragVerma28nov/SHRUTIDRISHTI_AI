@@ -3,98 +3,111 @@ import streamlit as st
 # Hide top toolbar
 def style_toolbar():
     st.markdown("""
-                
-                <style>
-            /*for headings*/    
-                @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&display=swap');
+    <style>
 
-            /*for fonts*/    
-                @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis:YEAR@1979&family=Outfit:wght@100..900&display=swap');
+    /* Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Outfit:wght@100..900&display=swap');
 
-                #MainMenu, footer, header{
-                visibility: hidden;
-                }
+    /* Hide Streamlit UI elements */
+    #MainMenu,
+    footer,
+    header {
+        visibility: hidden;
+    }
 
-                .block-container{
-                padding-top:1.5rem;
-                }
+    .block-container {
+        padding-top: 1.5rem;
+    }
 
-                h1{
-                font-family:'Climate Crisis',sans-serif !important;
-                font-size:305 rem !important;
-                line-height:1.1 !important;
-                margin-bottom:0 rem !important; 
-                }
+    /* Headings */
+    h1 {
+        font-family: 'Climate Crisis', sans-serif !important;
+        font-size: 3.5rem !important;
+        line-height: 1.1 !important;
+        margin-bottom: 0rem !important;
+    }
 
-                h2{
-                font-family:'Climate Crisis',sans-serif !important;
-                font-size:305 rem !important;
-                line-height:0.9 !important;
-                margin-bottom:0 rem !important; 
-                }
+    h2 {
+        font-family: 'Climate Crisis', sans-serif !important;
+        font-size: 2rem !important;
+        line-height: 0.9 !important;
+        margin-bottom: 0rem !important;
+    }
 
-                h3,h4,p{
-                font-family:'Outfit',sans-serif;
-                }
+    /* Body text */
+    h3,
+    h4,
+    p {
+        font-family: 'Outfit', sans-serif !important;
+    }
 
-                button{
-                border-radius:1.5rem !important;
-                background-color:#f258e3 !important; 
-                color:white !important;
-                padding:10px 20px !important;
-                border:none !important;
-                transition: transform 0.25s ease-in-out !important;
-                }
-                
-                button[kind="Secondary"]{
-                border-radius:1.5rem !important;
-                background-color:#EB4459E !important; 
-                color:white !important;
-                padding:10px 20px !important;
-                border:none !important;
-                transition: transform 0.25s ease-in-out !important;
-                }
+    /* Default Button */
+    button {
+        border-radius: 1.5rem !important;
+        background-color: #f258e3 !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        border: none !important;
+        transition: transform 0.25s ease-in-out !important;
+    }
 
-                button[kind="tertiary"]{
-                border-radius:1.5rem !important;
-                background-color:black !important; 
-                color:white !important;
-                padding:10px 20px !important;
-                border:none !important;
-                transition: transform 0.25s ease-in-out !important;
-                }
-                button:hover{
-                transform: scale(1.05);
-                }
+    /* Secondary Button */
+    button[kind="secondary"] {
+        border-radius: 1.5rem !important;
+        background-color: #EB4459 !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        border: none !important;
+        transition: transform 0.25s ease-in-out !important;
+    }
 
-                </style>
+    /* Tertiary Button */
+    button[kind="tertiary"] {
+        border-radius: 1.5rem !important;
+        background-color: black !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        border: none !important;
+        transition: transform 0.25s ease-in-out !important;
+    }
 
-                    """
-                ,unsafe_allow_html  = True)
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
 
 # Home Screen
 def style_background_home():
     st.markdown("""
-                
-                <style>
-                .stApp{
-                background:#5865f2 !important;
-                }
-                </style>
+    <style>
 
-                    """
-                ,unsafe_allow_html  = True)
+    .stApp {
+        background: #5865f2 !important;
+    }
 
-# Teacher Screen
+    div[data-testid="stColumn"] {
+        background-color: #E0E3FF !important;
+        padding: 2.5rem !important;
+        color: black;
+        border-radius: 5rem !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+
+# Dashboard Screen
 def style_background_dashboard():
     st.markdown("""
-                
-                <style>
-                .stApp{
-                background:##E0E3FF !important;
-                }
-                </style>
-                    """
-                ,unsafe_allow_html  = True)
-    
+    <style>
 
+    .stApp {
+        background: #E0E3FF !important;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
