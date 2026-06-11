@@ -94,7 +94,6 @@ def style_background_dashboard():
                 background:##E0E3FF !important;
                 }
                 </style>
-
                     """
                 ,unsafe_allow_html  = True)
     
