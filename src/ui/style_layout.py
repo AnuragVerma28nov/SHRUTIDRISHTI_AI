@@ -30,7 +30,7 @@ def style_toolbar():
 
     h2 {
         font-family: 'Climate Crisis', sans-serif !important;
-        font-size: 2rem !important;
+        font-size: 1.5rem !important;
         line-height: 0.9 !important;
         margin-bottom: 0rem !important;
     }
