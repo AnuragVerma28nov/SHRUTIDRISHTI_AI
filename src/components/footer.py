@@ -29,4 +29,3 @@ def teacher_footer():
                 ,unsafe_allow_html  = True)
 
     
-

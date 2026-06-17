@@ -1,5 +1,5 @@
-import streamlit as st
-from src.ui.style_layout import style_toolbar, style_background_dashboard
+import streamlit as st  
+from src.ui.base_layout import style_toolbar, style_background_dashboard
 from src.components.header import header_dashboard
 from src.components.footer import teacher_footer
 
