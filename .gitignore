@@ -6,3 +6,4 @@ venv/
 __pycache__/  
 .streamlit/
 dist/
+psd.txt
