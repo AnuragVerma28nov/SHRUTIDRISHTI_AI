@@ -7,13 +7,16 @@ from src.components.header import header_dashboard
 from src.components.subject_card import subject_card
 from src.components.footer import footer_dashboard
 from src.components.dailog_share_subject import share_subject_dialog
-from src.database.db import check_teacher_exists,teacher_login,create_teacher, get_teacher_subjects, get_attendance_for_teacher
+from src.database.db import update_assignment_marks,get_assignment_submissions,check_teacher_exists,teacher_login,create_teacher, get_teacher_subjects, get_attendance_for_teacher
 from src.components.dailog_create_subject import create_subject_dailog
 from src.components.dialog_add_photo import add_photos_dialog
 from src.pipelines.face_pipeline import predict_attendance
 from src.database.config import supabase
 from src.components.dailog_attendance_results import attendance_result_dialog
 from src.components.dialog_voice_attendance import voice_attendance_dialog
+from src.components.dailog_delete_subject import delete_subject_dialog
+from src.components.dialog_create_assignment import create_assignment_dialog
+from src.components.dialog_marks import marks_dialog
 
 def teacher_screen():
     style_toolbar()
@@ -28,12 +31,12 @@ def teacher_screen():
 
 def teacher_dashboard():
       teacher_data = st.session_state.teacher_data
-      c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
+      c1, c2 = st.columns([4, 4], vertical_alignment='center', gap='large')
       with c1:
         header_dashboard()
       with c2:
             st.subheader(f"""Welcome, {teacher_data['name']}""")
-            if st.button("Logout", type='secondary', key='login_back_btn'):
+            if st.button("Logout", type='secondary', key='login_back_btn',use_container_width=True):
              st.session_state['is_logged_in'] = False
              del st.session_state.teacher_data
              st.rerun()
@@ -43,7 +46,7 @@ def teacher_dashboard():
       if "current_teacher_tab" not in st.session_state:
             st.session_state.current_teacher_tab = 'take_attendance'
 
-      tab1, tab2, tab3 = st.columns(3)
+      tab1, tab2, tab3, tab4 = st.columns(4)
       with tab1:
             type1 = "primary" if st.session_state.current_teacher_tab == 'take_attendance' else "tertiary"
 
@@ -61,7 +64,14 @@ def teacher_dashboard():
 
             if st.button('Attendance Records',type= type3 ,width='stretch',icon=':material/list_alt:'):
                   st.session_state.current_teacher_tab = 'attendance_records'
+                  st.rerun() 
+      with tab4:
+           type4 = "primary" if st.session_state.current_teacher_tab == 'manage_assignments' else "tertiary"
+
+           if st.button('Manage Assignments', type= type4,width='stretch',icon=':material/list_alt:'):
+                  st.session_state.current_teacher_tab = 'manage_assignments'
                   st.rerun()
+             
 
       st.divider()
 
@@ -71,7 +81,10 @@ def teacher_dashboard():
             teacher_tab_manage_subjects()
       if st.session_state.current_teacher_tab == "attendance_records":
             teacher_tab_attendance_records()
+      if st.session_state.current_teacher_tab == "manage_assignments":
+            manage_assignments()
 
+      st.divider()
       footer_dashboard()
 
 def teacher_tab_take_attendance():
@@ -175,44 +188,107 @@ def teacher_tab_take_attendance():
 
 
 def teacher_tab_manage_subjects():
-      teacher_id = st.session_state.teacher_data['teacher_id']
-      col1, col2 = st.columns(2)
-      with col1:
-            st.header('Manage Subjects')
-      with col2:
-            if st.button('Create new subject', width='stretch'):
-                  create_subject_dailog(teacher_id)
-      # list all subjects
-      subjects = get_teacher_subjects(teacher_id)
-      if subjects:
-            for sub in subjects:
-                  stats = [
-                ("🫂", "Students", sub['total_students']),
-                ("🕰️", "Classes", sub['total_classes']),
-            ]
-            def share_btn():
-                  if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                        share_subject_dialog(sub['name'], sub['subject_code'])
-                  st.space()
+    teacher_id = st.session_state.teacher_data['teacher_id']
 
-            subject_card(
-                  name = sub['name'],
-                  code = sub['subject_code'],
-                  section = sub['section'],
-                  stats=stats,
-                  footer_callback=share_btn
-            )
-      else:
-        st.info("NO SUBJECTS FOUND. CREATE ONE ABOVE")
+    col1, col2 = st.columns(2)
 
-      
+    with col1:
+        st.header('Manage Subjects')
+
+    with col2:
+        if st.button('Create new subject', use_container_width=True):
+            create_subject_dailog(teacher_id)
+    with st.spinner('Loading your Subjects..'):
+     subjects = get_teacher_subjects(teacher_id)
+
+    col1, col2 = st.columns([4, 1], vertical_alignment="bottom")
+
+    with col1:
+        search_code = st.text_input(
+            "🔍 Search Subject by Code",
+            placeholder="Enter subject code..."
+        )
+
+    with col2:
+        search_clicked = st.button(
+            "Search",
+            use_container_width=True,
+        )
+
+    if search_clicked and search_code:
+        
+        subjects = [
+            sub for sub in subjects
+            if search_code.lower() in str(sub['subject_code']).lower()
+        ]
+
+    if not subjects:
+        st.info("No matching subjects found.")
+        return
+
+    for sub in subjects:
+
+        stats = [
+            ("🫂", "Students", sub['total_students']),
+            ("🕰️", "Classes", sub['total_classes']),
+        ]
+
+        def footer_callback(subject=sub):
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+                if st.button(
+                    f"Share",
+                    key=f"share_{subject['subject_code']}",
+                    icon=":material/share:"
+                ):
+                    share_subject_dialog(
+                        subject['name'],
+                        subject['subject_code']
+                    )
+
+            with col2:
+                if st.button(
+                    "Delete",
+                    key=f"delete_{subject['subject_id']}",
+                    icon=":material/delete:",
+                    type="tertiary"
+                ):
+                    delete_subject_dialog(subject)
+
+        subject_card(
+            name=sub['name'],
+            code=sub['subject_code'],
+            section=sub['section'],
+            stats=stats,
+            footer_callback=footer_callback
+        )
+
 
 def teacher_tab_attendance_records():
     st.header('Attendance Records')
 
     teacher_id = st.session_state.teacher_data['teacher_id']
 
-    records = get_attendance_for_teacher(teacher_id)
+    with st.spinner('Loading your Attendance Records..'):
+     records = get_attendance_for_teacher(teacher_id)
+
+    col1, col2 = st.columns([4, 1], vertical_alignment="bottom")
+
+    with col1:
+        search_code = st.text_input(
+            "🔍 Search Attendance by Subject Code",
+            placeholder="Enter subject code..."
+        )
+
+    with col2:
+        search_clicked = st.button(
+            "Search",
+            key="attendance_search_btn",
+            use_container_width=True
+        )
+
 
     if not records:
         return
@@ -253,8 +329,139 @@ def teacher_tab_attendance_records():
                   [['Time', 'Subject', 'Subject Code', 'Attendance Stats']]
                   )
     
-    st.dataframe(display_df, width='stretch', hide_index=True)
-      
+    if search_clicked and search_code:
+        display_df = display_df[
+            display_df["Subject Code"]
+            .astype(str)
+            .str.contains(search_code, case=False, na=False)
+        ]
+
+    if display_df.empty:
+        st.info("No attendance records found for this subject code.")
+    else:
+        st.dataframe(
+            display_df,
+            width='stretch',
+            hide_index=True
+        )    
+
+def manage_assignments():
+     teacher_id = st.session_state.teacher_data['teacher_id']
+
+     col1, col2 = st.columns(2)
+
+     with col1:
+        st.header("📄 Assignment Submissions")
+
+     with col2:
+        if st.button('Give new Assignments', use_container_width=True):
+            create_assignment_dialog(teacher_id)
+     with st.spinner('Loading your Assignment..'):
+      records = get_assignment_submissions(teacher_id)
+
+     subjects = get_teacher_subjects(teacher_id)
+
+     teacher_id = st.session_state.teacher_data["teacher_id"]
+
+     if not records:
+        st.info("No assignment submissions found.")
+        return
+
+    # ---------------- Search ---------------- #
+
+     col1, col2 = st.columns([4, 1], vertical_alignment="bottom")
+
+     with col1:
+        search_code = st.text_input(
+            "🔍 Search by Subject Code",
+            placeholder="Enter subject code..."
+        )
+
+     with col2:
+        search_clicked = st.button(
+            "Search",
+            key="assignment_search_btn",
+            use_container_width=True
+        )
+
+    # ---------------- Data ---------------- #
+
+     data = []
+
+     for row in records:
+
+        data.append({
+            "Submission ID": row["submission_id"],
+            "Student Name": row["students"]["name"],
+            "Subject Code": row["assignments"]["subjects"]["subject_code"],
+            "Submitted On": datetime.fromisoformat(
+                row["submitted_at"]
+            ).strftime("%d-%m-%Y %I:%M %p"),
+            "Marks": (
+                row["obtained_marks"]
+                if row["obtained_marks"] is not None
+                else "Not Graded"
+            ),
+            "PDF": row["submission_pdf_url"]
+        })
+
+     df = pd.DataFrame(data)
+
+     display_df = df.copy()
+
+     if search_clicked and search_code:
+        display_df = display_df[
+            display_df["Subject Code"]
+            .astype(str)
+            .str.contains(search_code, case=False, na=False)
+        ]
+
+     if display_df.empty:
+        st.info("No matching submissions found.")
+        return
+
+    # ---------------- DataFrame ---------------- #
+
+     event = st.dataframe(
+        display_df.drop(columns=["PDF"]),
+        hide_index=True,
+        use_container_width=True,
+        on_select="rerun",
+        selection_mode="single-row"
+    )
+
+     if not event.selection.rows:
+        st.info("👆 Select a submission from the table.")
+        return
+
+     selected_index = event.selection.rows[0]
+
+     selected = display_df.iloc[selected_index]
+
+     st.divider()
+
+     st.subheader("Selected Submission")
+
+     col1, col2 = st.columns(2)
+
+     with col1:
+        st.link_button(
+            "👁 View Submitted PDF",
+            selected["PDF"],
+            use_container_width=True
+        )
+
+     with col2:
+        if st.button(
+            "📝 Award / Edit Marks",
+            use_container_width=True
+        ):
+            marks_dialog(
+                int(selected["Submission ID"]),
+                selected["Student Name"]
+            )
+
+
 def login_teacher(username,password):
       if not username or not password:
             return False
@@ -268,7 +475,7 @@ def login_teacher(username,password):
       
 
 def teacher_screen_login():
-    c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
+    c1, c2 = st.columns([3, 2], vertical_alignment='center', gap='xxlarge')
 
     with c1:
         header_dashboard()
@@ -286,7 +493,7 @@ def teacher_screen_login():
     st.space()
     st.space()
 
-    teacher_username = st.text_input("Enter Username",placeholder='@abhisek')
+    teacher_username = st.text_input("Enter Username",placeholder='abhisek')
 
     teacher_pass = st.text_input("Enter Password",type='password', placeholder='password')
 
@@ -324,7 +531,7 @@ def register_teacher(teacher_username, teacher_name, teacher_pass, teacher_pass_
             return False ,"Unexpected error! Try again"
 
 def teacher_screen_register():
-    c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
+    c1, c2 = st.columns([4,2], vertical_alignment='center', gap='xxlarge')
 
     with c1:
         header_dashboard()
@@ -342,7 +549,7 @@ def teacher_screen_register():
     st.space()
     st.space()
 
-    teacher_username = st.text_input("Enter Username",placeholder='@abhisek')
+    teacher_username = st.text_input("Enter Username",placeholder='abhisek')
 
     teacher_name = st.text_input("Enter Name",placeholder='Abhisek Roy')
 
