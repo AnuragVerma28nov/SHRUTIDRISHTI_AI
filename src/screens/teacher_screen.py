@@ -273,7 +273,7 @@ def teacher_tab_attendance_records():
 
     with st.spinner('Loading your Attendance Records..'):
      records = get_attendance_for_teacher(teacher_id)
-
+    
     col1, col2 = st.columns([4, 1], vertical_alignment="bottom")
 
     with col1:
@@ -291,6 +291,7 @@ def teacher_tab_attendance_records():
 
 
     if not records:
+        st.info("No Attendance Records found.")
         return
     
     data = []
