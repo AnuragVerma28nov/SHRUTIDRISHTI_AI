@@ -251,14 +251,12 @@ def student_screen():
                 else:
                     st.info('Face not recognized! You might be a new student.')
                     show_registration = True
+
     if show_registration:
         with st.container(border=True):
             st.header('Register a new Profile')
-
             new_name = st.text_input("Enter your name", placeholder='Abhisek Verma')
-
             st.subheader("Voice Enrollment for Voice Attendance")
-
             audio_data = None
 
             try:
@@ -267,6 +265,7 @@ def student_screen():
                 st.error('Audio Data failed')
 
             if st.button('Create Account',type='primary'):
+
                 if new_name:
                  with st.spinner("Creating profile..."):
                     img = np.array(Image.open(photo_source))
@@ -276,10 +275,8 @@ def student_screen():
                         face_emb = encodings[0].tolist()
 
                         voice_emb = None
-
                         if audio_data:
                             voice_emb = get_voice_embeddings(audio_data.read())
-
                             response_data = create_student(new_name, face_embedding=face_emb, voice_embedding=voice_emb)
 
                         if response_data:
