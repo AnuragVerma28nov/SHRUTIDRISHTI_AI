@@ -1,4 +1,4 @@
-# 🗺️ Roadmap
+# Roadmap
 
 ## ✅ Stage 1 — Foundation
 - Project Setup
