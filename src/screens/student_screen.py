@@ -57,17 +57,20 @@ def student_dashboard():
 
     if st.session_state.current_student_tab == "assignments_subjects":
             assignments_subjects()
-            
+
     st.divider()
+
     footer_dashboard()
 
 def enrolled_subjects():
 
     student_data = st.session_state.student_data
     student_id = student_data['student_id']
+
     c1, c2 =st.columns(2)
     with c1:
         st.header('Your Enrolled Subjects')
+        
     with c2:
         if st.button('Enroll in Subject', type='secondary', width='stretch'):
             enroll_dialog()
