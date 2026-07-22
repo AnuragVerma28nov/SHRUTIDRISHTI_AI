@@ -16,8 +16,11 @@ from src.components.dialog_submit_assignment import submit_assignment_dialog
 from src.components.dailog_view_marks import view_marks_dialog
 
 def student_dashboard():
+
     student_data = st.session_state.student_data
+
     student_id = student_data['student_id']
+
     c1, c2 = st.columns([4, 4], vertical_alignment='center', gap='large')
     with c1:
         header_dashboard()
@@ -32,23 +35,29 @@ def student_dashboard():
 
     if "current_student_tab" not in st.session_state:
             st.session_state.current_student_tab = 'enrolled_subjects'
+
     tab1, tab2 = st.columns(2)
+
     with tab1:
             type1 = "primary" if st.session_state.current_student_tab == 'enrolled_subjects' else "tertiary"
 
             if st.button('Enrolled Subjects', type= type1,width='stretch',icon=':material/list_alt:'):
                   st.session_state.current_student_tab = 'enrolled_subjects'
                   st.rerun()
+
     with tab2:
             type2 = "primary" if st.session_state.current_student_tab == 'assignments_subjects' else "tertiary"
 
             if st.button('Your Assignments',type= type2,width='stretch',icon=':material/book_ribbon:'):
                   st.session_state.current_student_tab = 'assignments_subjects'
                   st.rerun()
+
     if st.session_state.current_student_tab == "enrolled_subjects":
             enrolled_subjects()
+
     if st.session_state.current_student_tab == "assignments_subjects":
             assignments_subjects()
+            
     st.divider()
     footer_dashboard()
 
