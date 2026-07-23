@@ -138,7 +138,6 @@ def assignments_subjects():
 
     student_id = st.session_state.student_data["student_id"]
 
-    
     st.divider()
     
     st.header("📚 Assignments")
@@ -147,7 +146,6 @@ def assignments_subjects():
     if not assignments:
         st.info("No assignments available.")
         return
-    
 
     for assignment in assignments:
 
@@ -202,9 +200,6 @@ def assignments_subjects():
                 key=f"submit_{assignment['assignment_id']}",
                 use_container_width=True ):
                         submit_assignment_dialog(assignment["assignment_id"],student_id )
-
-    
-
 
 def student_screen():
     
