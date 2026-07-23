@@ -23,6 +23,7 @@ def view_marks_dialog(assignment):
 
     if submission["obtained_marks"] is None:
         st.info("⏳ Your assignment has not been checked yet.")
+        
     else:
         st.success(
             f"🏆 Obtained Marks : {submission['obtained_marks']} / {assignment['max_marks']}"
