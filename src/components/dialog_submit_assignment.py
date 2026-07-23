@@ -1,7 +1,6 @@
 import streamlit as st
 from src.database.db import submit_assignment
 
-
 @st.dialog("Submit Assignment")
 def submit_assignment_dialog(assignment_id, student_id):
 
@@ -10,6 +9,7 @@ def submit_assignment_dialog(assignment_id, student_id):
         "Assignment Title",
         placeholder="Assignment 1"
     )
+
     pdf = st.file_uploader(
         "Choose PDF",
         type=["pdf"]
