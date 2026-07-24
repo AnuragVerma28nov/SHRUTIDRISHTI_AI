@@ -107,6 +107,7 @@ def enrolled_subjects():
         stats = stats_map.get(sid, {"total": 0, "attended": 0})
 
         def unenroll_button(subject=sub, subject_id=sid):
+            
             if st.button(
                 "Unenroll from this course",
                 key=f"unenroll_{subject_id}",
