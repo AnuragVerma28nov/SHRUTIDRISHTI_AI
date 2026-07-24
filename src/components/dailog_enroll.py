@@ -51,6 +51,7 @@ def enroll_dialog():
 
         if check.data:
             st.warning("You are already enrolled in this subject")
+            
         else:
             enroll_student_to_subject(
                 student_id,
