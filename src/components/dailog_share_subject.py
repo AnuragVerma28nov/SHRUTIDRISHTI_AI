@@ -1,12 +1,11 @@
 import streamlit as st
-
 import segno
 import io
-
 
 @st.dialog("Share Class Link")
 def share_subject_dialog(subject_name, subject_code):
     # app_domain = "http://localhost:8501" # for localhost
+
     app_domain = "shrutidrishtiai.streamlit.app" #for deployment
 
     join_url = f"{app_domain}/?join-code={subject_code}"
