@@ -464,9 +464,12 @@ def manage_assignments():
 
 
 def login_teacher(username,password):
+      
       if not username or not password:
             return False
+      
       teacher = teacher_login(username,password)
+
       if teacher:
             st.session_state.user_role = 'teacher'
             st.session_state.teacher_data = teacher
@@ -476,6 +479,7 @@ def login_teacher(username,password):
       
 
 def teacher_screen_login():
+
     c1, c2 = st.columns([3, 2], vertical_alignment='center', gap='xxlarge')
 
     with c1:
@@ -510,7 +514,8 @@ def teacher_screen_login():
                         time.sleep(2)
                         st.rerun()   
                   else:
-                        st.error("Invalid  ceredentials")         
+                        st.error("Invalid  ceredentials")  
+                               
     with btnc2:
         if st.button("Register Instead",icon=':material/passkey:', icon_position='left',width='stretch'):
              st.session_state.teacher_login_type = 'register'

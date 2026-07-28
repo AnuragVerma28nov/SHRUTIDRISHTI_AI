@@ -60,7 +60,7 @@ def teacher_login(username, password):
 
     if not response.data:
         return None
-
+    
     teacher = response.data[0]
 
     print("Teacher found:", teacher)
@@ -68,7 +68,6 @@ def teacher_login(username, password):
 
     if check_pass(password, teacher["password"]):
         return teacher
-
     return None
 
 
