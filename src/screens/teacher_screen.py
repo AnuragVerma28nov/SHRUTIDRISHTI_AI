@@ -518,23 +518,29 @@ def teacher_screen_login():
     footer_dashboard()
 
 def register_teacher(teacher_username, teacher_name, teacher_pass, teacher_pass_confirm ):
+     
      if not teacher_username or not teacher_name or not teacher_pass:
           return False ,"All fields are must required!"
+     
      if check_teacher_exists(teacher_username):
                     return False ,"Username is already exists."
+     
      if teacher_pass != teacher_pass_confirm:
                     return False ,"Both password doesn't match"
      
      try:
            create_teacher(teacher_username,teacher_pass,teacher_name)
            return True,"Successfully created!Login now"
+     
      except Exception as e:
             return False ,"Unexpected error! Try again"
 
 def teacher_screen_register():
+
     c1, c2 = st.columns([4,2], vertical_alignment='center', gap='xxlarge')
 
     with c1:
+
         header_dashboard()
 
     with c2:

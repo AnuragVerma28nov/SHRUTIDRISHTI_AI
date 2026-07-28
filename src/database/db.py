@@ -3,9 +3,7 @@ from src.database.config import supabase
 import uuid
 from datetime import datetime
 
-# =========================
 # Teacher Database Functions
-# =========================
 
 def check_teacher_exists(username):
     response = (
@@ -42,14 +40,12 @@ def create_teacher(username, password, name):
         "password": hash_pass(password),
         "name": name
     }
-
     response = (
         supabase
         .table("teachers")
         .insert(data)
         .execute()
     )
-
     return response.data
 
 
