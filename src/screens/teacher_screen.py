@@ -94,7 +94,7 @@ def teacher_dashboard():
 
       if st.session_state.current_teacher_tab == "attendance_records":
             teacher_tab_attendance_records()
-            
+
       if st.session_state.current_teacher_tab == "manage_assignments":
             manage_assignments()
 
@@ -102,6 +102,7 @@ def teacher_dashboard():
       footer_dashboard()
 
 def teacher_tab_take_attendance():
+
     teacher_id = st.session_state.teacher_data['teacher_id']
     st.header('Take AI Attendance')
 
@@ -137,7 +138,9 @@ def teacher_tab_take_attendance():
         for idx, img in enumerate(st.session_state.attendance_images):
             with gallery_cols[idx % 4 ]:
                 st.image(img, width='stretch', caption=f'Photo {idx+1}')
+
     has_photos = bool(st.session_state.attendance_images)
+
     c1, c2, c3 = st.columns(3)
 
     with c1:
@@ -145,9 +148,7 @@ def teacher_tab_take_attendance():
             st.session_state.attendance_images = []
             st.rerun()
 
-
     with c2:
-        
         if st.button('Run Face Analysis', width='stretch', type='secondary', icon=':material/analytics:', disabled=not has_photos):
             with st.spinner('Deep scanning classroom photos...'):
                 all_detected_ids = {}
@@ -155,7 +156,6 @@ def teacher_tab_take_attendance():
                 for idx, img in enumerate(st.session_state.attendance_images):
                     img_np = np.array(img.convert('RGB'))
                     detected, _, _ = predict_attendance(img_np)
-
 
                     if detected:
                         for sid in detected.keys():
@@ -173,7 +173,6 @@ def teacher_tab_take_attendance():
                     results, attendance_to_log  = [], []
 
                     current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-
 
                     for node in enrolled_students:
                         student = node['students']
@@ -199,7 +198,6 @@ def teacher_tab_take_attendance():
     with c3:
         if st.button('Use Voice Attendance', type='primary', width='stretch', icon=':material/mic:'):
             voice_attendance_dialog(selected_subject_id)
-
 
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
