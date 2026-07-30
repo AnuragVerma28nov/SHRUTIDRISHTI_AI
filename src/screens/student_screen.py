@@ -72,7 +72,7 @@ def enrolled_subjects():
         st.header('Your Enrolled Subjects')
         
     with c2:
-        if st.button('Enroll in Subject', type='secondary', width='stretch'):
+        if st.button('+ Enroll in Subject', type='secondary', width='stretch'):
             enroll_dialog()
 
     st.divider()
