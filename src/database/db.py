@@ -96,6 +96,7 @@ def create_student(new_name, face_embedding=None, voice_embedding=None):
     return response.data  
 
 def create_subject(subject_code,name,section,teacher_id):
+    
     data = {
         "subject_code":subject_code,
         "name":name,
@@ -198,6 +199,8 @@ def create_assignment(
             "content-type": assignment_image.type
         }
     )
+
+    public_url = supabase.storage.from_("assignment_images").get_public_url(file_path)
 
     # Insert assignment record
     data = {

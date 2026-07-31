@@ -200,6 +200,7 @@ def teacher_tab_take_attendance():
             voice_attendance_dialog(selected_subject_id)
 
 def teacher_tab_manage_subjects():
+
     teacher_id = st.session_state.teacher_data['teacher_id']
 
     col1, col2 = st.columns(2)
@@ -210,6 +211,7 @@ def teacher_tab_manage_subjects():
     with col2:
         if st.button('Create new subject', use_container_width=True):
             create_subject_dailog(teacher_id)
+            
     with st.spinner('Loading your Subjects..'):
      subjects = get_teacher_subjects(teacher_id)
 
