@@ -211,7 +211,7 @@ def teacher_tab_manage_subjects():
     with col2:
         if st.button('Create new subject', use_container_width=True):
             create_subject_dailog(teacher_id)
-            
+
     with st.spinner('Loading your Subjects..'):
      subjects = get_teacher_subjects(teacher_id)
 
@@ -257,6 +257,7 @@ def teacher_tab_manage_subjects():
                     key=f"share_{subject['subject_code']}",
                     icon=":material/share:"
                 ):
+                    
                     share_subject_dialog(
                         subject['name'],
                         subject['subject_code']
@@ -269,6 +270,7 @@ def teacher_tab_manage_subjects():
                     icon=":material/delete:",
                     type="tertiary"
                 ):
+                    
                     delete_subject_dialog(subject)
 
         subject_card(
