@@ -33,34 +33,8 @@ def home_feature():
     - 💯 Award Marks & Feedback
     """)
 
-    st.subheader("🛠 Technology Stack")
 
-    tech1, tech2, tech3 = st.columns(3)
+    
+    
 
-    with tech1:
-        st.markdown("""
-    ### Frontend
-    - Streamlit
-    - HTML
-    - CSS
-    - JS
-    """)
-
-    with tech2:
-        st.markdown("""
-    ### Backend
-    - Supabase
-    - PostgreSQL
-    - Supabase Storage
-    - Flask
-    """)
-
-    with tech3:
-        st.markdown("""
-    ### AI & ML
-    - OpenCV
-    - face_recognition
-    - Resemblyzer
-    - NumPy,Pandas
-    - scikit-learn
-    """)
+    
