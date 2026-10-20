@@ -20,6 +20,7 @@ def home_feature():
     """,)
 
     with teacher_col:
+        
         st.markdown("""
     ### 👨‍🏫 Teacher Portal
 
