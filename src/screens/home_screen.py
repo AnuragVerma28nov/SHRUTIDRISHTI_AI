@@ -1,7 +1,6 @@
 import streamlit as st
 from src.components.header import home_header, header_dashboard
 from src.components.footer import home_footer 
-from src.components.home_features import  home_feature
 from src.ui.base_layout import style_toolbar, style_background_home
 
 def home_screen():  
@@ -25,8 +24,6 @@ def home_screen():
         if st.button('Teacher Portal',type = 'primary',icon=':material/arrow_outward:', icon_position='right'):
             st.session_state['login_type'] = 'teacher'
             st.rerun() 
-
-    home_feature()
     
     st.divider()
     home_footer()
